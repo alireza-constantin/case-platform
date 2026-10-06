@@ -25,9 +25,17 @@ type errorDetail struct {
 }
 
 // NewHandler receives safe catalogue registrations only from application assembly.
-func NewHandler(db *pgxpool.Pool, origin string, secureCookie bool, cases []CaseMetadata) http.Handler {
-	if cases == nil {
-		cases = []CaseMetadata{}
+func NewHandler(db *pgxpool.Pool, origin string, secureCookie bool, modules []Case) http.Handler {
+	cases := []CaseMetadata{}
+	registrations := make(map[casePin]Case)
+	for _, module := range modules {
+		metadata := module.Metadata()
+		pin := casePin{metadata.CaseID, metadata.CaseVersion}
+		if metadata.CaseID == "" || metadata.CaseVersion == "" || registrations[pin] != nil {
+			panic("invalid or duplicate case registration")
+		}
+		registrations[pin] = module
+		cases = append(cases, metadata)
 	}
 	mux := http.NewServeMux()
 	mux.HandleFunc("POST /api/guest", func(w http.ResponseWriter, r *http.Request) {
@@ -92,6 +100,7 @@ func NewHandler(db *pgxpool.Pool, origin string, secureCookie bool, cases []Case
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		writeError(w, 404, "not_found", "Resource unavailable.")
 	})
+	registerPlaythroughs(mux, db, origin, registrations)
 	return mux
 }
 
