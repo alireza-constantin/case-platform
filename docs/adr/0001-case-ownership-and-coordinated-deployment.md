@@ -1,0 +1,9 @@
+# Case ownership with trusted, coordinated deployment
+
+Cases own gameplay semantics, state schemas, actions, presentation, navigation, and case-specific server behavior. The platform kernel provides case-neutral capabilities: adding Terminal Demo may add and register case code, but must not introduce terminal concepts into the kernel. This boundary is chosen so each case can behave as its own application rather than conform to a fixed detective-game template.
+
+V1 runs only trusted first-party code that we write, review, and deploy. Platform and cases may be built and deployed together with explicit case registration; deployment independence is not required to prove gameplay independence. Third-party uploads, sandboxing, runtime discovery, hot loading, independent case deployments, and plugin loading are deferred. Untrusted authorship explicitly reopens the trust decision.
+
+Enforce three dependency layers: kernel/contracts, cases, and application assembly. Kernel packages never import case packages, switch on case IDs, or contain case-specific gameplay concepts. Cases depend on neutral contracts/capabilities. Application assembly imports and registers case packages. Adding a case may change its own frontend/backend packages and the composition root without changing kernel gameplay contracts.
+
+Apply this boundary independently on both sides. Frontend layers are `app/src/platform`, `app/src/cases`, and `app/src/assembly`; backend layers are `server/internal/kernel`, `server/internal/cases`, and `server/internal/assembly`. Top-level `app/` contains Vite/React, `server/` contains Go, `contracts/` contains the neutral app-to-server agreement, `migrations/` contains database migrations, and `docs/` preserves design documentation. Assembly imports/registers cases; platform/kernel layers never import implementations.

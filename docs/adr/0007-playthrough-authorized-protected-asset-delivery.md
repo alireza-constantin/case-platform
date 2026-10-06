@@ -1,0 +1,5 @@
+# Protected asset delivery remains playthrough-authorized
+
+Public assets may be disclosed without playthrough authorization. Protected asset fetches require a valid guest/session, access to the requested playthrough, its correct case/version, and a case-owned authorization decision. The platform delivers the bytes without understanding the gameplay reason for access. Unlocking an asset in one playthrough does not make its URL publicly authorized, and a raw storage location is not an authorization mechanism.
+
+M0 may deliver protected assets through the application server with private or no-store caching where disclosure through caches matters. The simplest M0 delivery assumption is no-store for protected responses and no service-worker caching of protected API responses or assets. Signed URLs, CDN integration, advanced pipelines, and DRM are deferred. Legitimately revealed information may still be manually shared by a player. Exact asset interfaces are implementation details to resolve against the demos.

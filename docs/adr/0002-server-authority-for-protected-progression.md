@@ -1,0 +1,5 @@
+# Server authority for protected progression and secrets
+
+Clients are treated as hostile. Case-owned server logic validates attempts that gate authoritative progression; client-supplied success flags cannot authorize progress. Unrevealed passwords, hidden content, solutions, and other secret material must remain unavailable to the browser until legitimately revealed. Each development demo must prove this boundary with at least one protected mechanic.
+
+Persistence, authority, and secrecy are independent properties of case state. Harmless UI interactions need not pass through the server. The platform must prevent a guest from reading or mutating another playthrough's private state while remaining ignorant of case action and state semantics. Sophisticated bot prevention, anti-automation, DRM, and prevention of externally shared solutions are deferred; reasonable abuse protection remains in scope. Storage and disclosure ownership are specified in ADR-0005; exact execution interfaces remain undecided.
