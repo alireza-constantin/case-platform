@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"io"
-	"net/http"
 	"net/http/httptest"
 	"testing"
 
@@ -61,40 +59,9 @@ func TestCompletionOnlyConcurrentReplayAndMonotonicContinuation(t *testing.T) {
 		t.Fatal("unlock must durably record its one relevant event and receipt")
 	}
 	completionBody := actionBody("complete-only", 1, "gallery.open", map[string]any{})
-	type response struct {
-		status int
-		body   []byte
-		err    error
-	}
-	start := make(chan struct{})
-	responses := make(chan response, 4)
-	for range 4 {
-		go func() {
-			<-start
-			req, err := http.NewRequest("POST", srv.URL+actions, bytes.NewBufferString(completionBody))
-			if err != nil {
-				responses <- response{err: err}
-				return
-			}
-			req.Header.Set("Content-Type", "application/json")
-			req.AddCookie(owner.cookie)
-			res, err := http.DefaultClient.Do(req)
-			if err != nil {
-				responses <- response{err: err}
-				return
-			}
-			defer res.Body.Close()
-			body, err := io.ReadAll(res.Body)
-			responses <- response{res.StatusCode, body, err}
-		}()
-	}
-	close(start)
+	responses := owner.concurrent(actions, []string{completionBody, completionBody, completionBody, completionBody})
 	var recorded []byte
-	for range 4 {
-		res := <-responses
-		if res.err != nil {
-			t.Fatal(res.err)
-		}
+	for _, res := range responses {
 		if res.status != 200 {
 			t.Fatalf("completion-only duplicate returned %d", res.status)
 		}
