@@ -1,0 +1,32 @@
+{
+  "guest_request": {},
+  "empty_catalogue": { "cases": [] },
+  "catalogue_shape_only": { "cases": [{ "case_id": "synthetic-case", "case_version": "example-v1", "title": "Synthetic example" }] },
+  "own_runs": { "playthroughs": [] },
+  "create_request": { "case_id": "synthetic-case", "case_version": "example-v1" },
+  "created_or_current_snapshot": {
+    "playthrough": {
+      "playthrough_id": "synthetic-run", "case_id": "synthetic-case", "case_version": "example-v1",
+      "revision": 0, "completed_at": null, "created_at": "2026-01-01T00:00:00Z", "updated_at": "2026-01-01T00:00:00Z", "availability": "available"
+    },
+    "view": {}
+  },
+  "action_request": { "request_id": "synthetic-request", "base_revision": 0, "action_type": "example.change", "payload": {} },
+  "successful_action_and_identical_replay": {
+    "playthrough": {
+      "playthrough_id": "synthetic-run", "case_id": "synthetic-case", "case_version": "example-v1",
+      "revision": 1, "completed_at": null, "created_at": "2026-01-01T00:00:00Z", "updated_at": "2026-01-01T00:01:00Z", "availability": "available"
+    },
+    "view": {}, "request_id": "synthetic-request", "outcome": {}
+  },
+  "errors": [
+    { "status": 400, "body": { "error": { "code": "invalid_request", "message": "Invalid JSON request." } } },
+    { "status": 401, "body": { "error": { "code": "missing_guest", "message": "Establish a guest first." } } },
+    { "status": 404, "body": { "error": { "code": "not_found", "message": "Resource unavailable." } } },
+    { "status": 409, "body": { "error": { "code": "revision_conflict", "message": "Fetch the current view before submitting a new action." } } },
+    { "status": 409, "body": { "error": { "code": "request_id_conflict", "message": "Request ID already committed with different input." } } },
+    { "status": 409, "body": { "error": { "code": "case_version_unavailable", "message": "Pinned case version unavailable." } } },
+    { "status": 422, "body": { "error": { "code": "action_rejected", "message": "Case action rejected." } } },
+    { "status": 500, "body": { "error": { "code": "internal_error", "message": "Request could not be completed." } } }
+  ]
+}
