@@ -118,47 +118,8 @@ func TestPhoneConcurrentActions(t *testing.T) {
 	fresh := decode(t, owner.call("POST", "/api/playthroughs", createPhone, 201))
 	path := "/api/playthroughs/" + fresh.Playthrough.ID
 	actions := path + "/actions"
-	type response struct {
-		status int
-		body   []byte
-		err    error
-	}
-	concurrent := func(bodies []string) []response {
-		start := make(chan struct{})
-		results := make(chan response, len(bodies))
-		for _, body := range bodies {
-			go func(body string) {
-				<-start
-				req, err := http.NewRequest("POST", srv.URL+actions, strings.NewReader(body))
-				if err != nil {
-					results <- response{err: err}
-					return
-				}
-				req.Header.Set("Content-Type", "application/json")
-				req.AddCookie(owner.cookie)
-				res, err := http.DefaultClient.Do(req)
-				if err != nil {
-					results <- response{err: err}
-					return
-				}
-				defer res.Body.Close()
-				data, err := io.ReadAll(res.Body)
-				results <- response{res.StatusCode, data, err}
-			}(body)
-		}
-		close(start)
-		got := []response{}
-		for range bodies {
-			result := <-results
-			if result.err != nil {
-				t.Fatal(result.err)
-			}
-			got = append(got, result)
-		}
-		return got
-	}
 	duplicate := actionBody("duplicate", 0, "gallery.attempt", map[string]string{"password": "wrong"})
-	got := concurrent([]string{duplicate, duplicate, duplicate, duplicate})
+	got := owner.concurrent(actions, []string{duplicate, duplicate, duplicate, duplicate})
 	for _, res := range got {
 		if res.status != 200 || string(res.body) != string(got[0].body) {
 			t.Fatal("concurrent committed duplicates must share one recorded result")
@@ -172,7 +133,7 @@ func TestPhoneConcurrentActions(t *testing.T) {
 	for i := 0; i < 4; i++ {
 		distinct = append(distinct, actionBody(fmt.Sprintf("distinct-%d", i), 1, "gallery.attempt", map[string]string{"password": "wrong"}))
 	}
-	got = concurrent(distinct)
+	got = owner.concurrent(actions, distinct)
 	success, conflicts := 0, 0
 	for _, res := range got {
 		switch res.status {
@@ -295,6 +256,48 @@ func (b browser) call(method, path, body string, want int) []byte {
 		}
 	}
 	return data
+}
+
+type concurrentResponse struct {
+	status int
+	body   []byte
+	err    error
+}
+
+func (b browser) concurrent(path string, bodies []string) []concurrentResponse {
+	b.t.Helper()
+	start := make(chan struct{})
+	results := make(chan concurrentResponse, len(bodies))
+	for _, body := range bodies {
+		go func(body string) {
+			<-start
+			req, err := http.NewRequest("POST", b.url+path, strings.NewReader(body))
+			if err != nil {
+				results <- concurrentResponse{err: err}
+				return
+			}
+			req.Header.Set("Content-Type", "application/json")
+			req.AddCookie(b.cookie)
+			res, err := http.DefaultClient.Do(req)
+			if err != nil {
+				results <- concurrentResponse{err: err}
+				return
+			}
+			defer res.Body.Close()
+			data, err := io.ReadAll(res.Body)
+			results <- concurrentResponse{res.StatusCode, data, err}
+		}(body)
+	}
+	close(start)
+	got := make([]concurrentResponse, 0, len(bodies))
+	for range bodies {
+		result := <-results
+		if result.err != nil {
+			b.t.Fatal(result.err)
+		}
+		got = append(got, result)
+	}
+	return got
 }
 
 func (b browser) reject(path, body string, status int, code string) {
