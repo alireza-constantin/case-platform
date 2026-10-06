@@ -14,7 +14,7 @@ async (page) => {
       return route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="260" height="200"><rect width="260" height="200" fill="#325b76"/><text x="20" y="90" fill="white">Synthetic image</text></svg>' });
     }
     let body = snapshot; let status = 200;
-    if (path === '/api/cases') body = { cases: [{ case_id: 'phone-demo', case_version: 'm0-v1', title: 'Phone Demo' }] };
+    if (path === '/api/cases') body = { cases: [{ case_id: 'phone-demo', case_version: 'm0-v1', title: 'Phone Demo' }, { case_id: 'terminal-demo', case_version: 'm0-v1', title: 'Terminal Demo' }] };
     if (path === '/api/playthroughs' && req.method() === 'GET') body = { playthroughs: [] };
     if (path === '/api/playthroughs' && req.method() === 'POST') status = 201;
     if (path.endsWith('/actions')) {
@@ -26,7 +26,7 @@ async (page) => {
     }
     return route.fulfill({ status, json: body });
   });
-  await page.goto('http://localhost:5183');
+  await page.goto(new URL(page.url()).origin);
   await page.getByRole('button', { name: 'Start Phone Demo', exact: true }).click({ timeout: 3000 });
   await page.getByRole('button', { name: 'Messages', exact: true }).click();
   assert(await page.getByText('A synthetic public clue for this browser check.').isVisible(), 'Public projected message must be visible');

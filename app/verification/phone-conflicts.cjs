@@ -9,7 +9,7 @@ async (page) => {
     const req = route.request(); const path = new URL(req.url()).pathname;
     if (path === '/api/guest') return route.fulfill({ status: 204 });
     let body = snapshot;
-    if (path === '/api/cases') body = { cases: [{ case_id: 'phone-demo', case_version: 'm0-v1', title: 'Phone Demo' }] };
+    if (path === '/api/cases') body = { cases: [{ case_id: 'phone-demo', case_version: 'm0-v1', title: 'Phone Demo' }, { case_id: 'terminal-demo', case_version: 'm0-v1', title: 'Terminal Demo' }] };
     if (path === '/api/playthroughs' && req.method() === 'GET') body = { playthroughs: runs };
     if (path === '/api/playthroughs' && req.method() === 'POST') { creations++; runs = [summary]; return route.abort('failed'); }
     if (path.endsWith('/actions')) {
@@ -22,7 +22,7 @@ async (page) => {
     }
     return route.fulfill({ json: body });
   });
-  await page.goto('http://localhost:5183');
+  await page.goto(new URL(page.url()).origin);
   await page.getByRole('button', { name: 'Start Phone Demo', exact: true }).click();
   await page.getByRole('alert').waitFor();
   assert(await page.getByRole('button', { name: 'Start Phone Demo', exact: true }).isDisabled(), 'Uncertain creation must require own-run reconciliation before another creation');
