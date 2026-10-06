@@ -2,7 +2,7 @@
 
 This freezes the defaults in [issue #1](https://github.com/alireza-constantin/case-platform/issues/1). Changes to neutral messages require coordination between both tracks. This directory is documentation and synthetic examples, not a runtime package, schema service, or generated SDK. Each side owns its language-specific types and builds independently.
 
-Only guest bootstrap and catalogue are implemented in #2. The other five operations are agreements for later tickets; their routes currently return 404. There are no registered cases yet.
+All seven operations below are implemented in M0. Frontend and backend assemblies register `phone-demo` / `m0-v1` and `terminal-demo` / `m0-v1`; the launcher verifies their opaque catalogue metadata at startup. Phone and Terminal keep their gameplay types and private definitions inside their own case modules. Independent frontend/backend builds require no cross-language runtime imports. [Local startup](../README.md) and [real system verification](../docs/verification/ticket-7-system.md) describe the assembled path; synthetic examples remain development aids.
 
 ## HTTP operations
 
