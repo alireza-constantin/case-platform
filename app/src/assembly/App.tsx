@@ -1,6 +1,7 @@
 import { Launcher } from '../platform/Launcher';
+import { phone } from '../cases/phone';
 
-// Case imports and registration will live here when the slices are delivered.
+const implementations = [phone];
 export function App() {
-  return <Launcher />;
+  return <Launcher implementations={implementations} />;
 }
