@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: case_platform
+      POSTGRES_PASSWORD: local_only
+      POSTGRES_DB: case_platform
+    ports:
+      - "127.0.0.1:54329:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./migrations:/migrations:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U case_platform -d case_platform"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+volumes:
+  pgdata:
