@@ -28,9 +28,17 @@ export function Launcher({ implementations }: { implementations: CaseImplementat
   const operation = useRef<AbortController | null>(null);
   useEffect(() => {
     const controller = new AbortController(); operation.current = controller;
-    setBusy(true); setError('');
+    setBusy(true); setError(''); setCatalogue(null);
     (async () => {
       const cases = await loadCatalogue(controller.signal);
+      // Assembly agreement uses only opaque metadata, independently of either
+      // side's case runtime. Historical unavailable pins are not the catalogue.
+      const key = (item: { case_id: string; case_version: string }) => JSON.stringify([item.case_id, item.case_version]);
+      const frontend = new Set(implementations.map(key));
+      const backend = new Set(cases.map(key));
+      if (frontend.size !== implementations.length || backend.size !== cases.length || frontend.size !== backend.size || [...frontend].some(id => !backend.has(id))) {
+        throw new Error('Case registration mismatch. Frontend and API case IDs and versions must agree before playing.');
+      }
       const runs = await listPlaythroughs(controller.signal);
       if (!controller.signal.aborted) { setCatalogue({ cases, runs }); setCreationUncertain(false); }
       const match = window.location.pathname.match(/^\/play\/([^/]+)/);
@@ -41,7 +49,7 @@ export function Launcher({ implementations }: { implementations: CaseImplementat
     })().catch(cause => { if (!controller.signal.aborted) setError(cause instanceof Error ? cause.message : 'Connection unavailable.'); })
       .finally(() => { if (!controller.signal.aborted) setBusy(false); });
     return () => controller.abort();
-  }, [attempt]);
+  }, [attempt, implementations]);
   useEffect(() => {
     const navigate = () => { setSnapshot(null); setAttempt(value => value + 1); };
     window.addEventListener('popstate', navigate);
