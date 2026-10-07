@@ -1,6 +1,6 @@
 # M0 architecture review
 
-Status: consolidated from the design interview for review. This document authorizes no implementation or external publication. [Scope](m0-scope.md) defines the two gameplay slices; [acceptance criteria](m0-acceptance.md) define the evidence required. [Glossary](../../GLOSSARY.md) supplies shared terminology, and ADR-0001 through ADR-0009 record decision rationale.
+Status: historical design-time architecture review. M0 has since been completed and merged; see [M0 closeout](m0-closeout.md) for implementation, verification, and the direction for M1. The design content below is preserved. [Scope](m0-scope.md) defines the two gameplay slices; [acceptance criteria](m0-acceptance.md) define the evidence required. [Glossary](../../GLOSSARY.md) supplies shared terminology, and ADR-0001 through ADR-0009 record decision rationale.
 
 ## Architectural thesis
 

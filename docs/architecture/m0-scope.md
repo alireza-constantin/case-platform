@@ -1,5 +1,7 @@
 # M0 boundary milestone
 
+Status: historical design-time scope. M0 has since been completed and merged; see [M0 closeout](m0-closeout.md) for implementation, verification, and the direction for M1. The scope and design-time authorization wording below are preserved.
+
 Prove the platform/case boundary with exactly two slices: Phone Demo and Terminal Demo. The two experiences must look and behave differently. Adding Terminal Demo may extend application composition and case code, but must not teach the platform kernel terminal-specific concepts. Neither demo is a reusable gameplay engine.
 
 ## Agreed gameplay slices
