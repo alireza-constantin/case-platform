@@ -12,3 +12,7 @@ body { margin: 0; }
 .launcher button { font: inherit; color: #fff; background: #2c6583; padding: 10px 18px; border: 0; border-radius: 4px; cursor: pointer; }
 .launcher button:focus-visible { outline: 3px solid #243946; outline-offset: 4px; }
 @media (max-width: 480px) { .launcher { padding-top: 40px; } .launcher section { padding: 20px; } }
+.launcher ul { list-style: none; padding: 0; }
+.launcher li + li { border-top: 1px solid #bdccd5; margin-top: 24px; padding-top: 12px; }
+.launcher-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.launcher button:disabled { opacity: .6; cursor: wait; }

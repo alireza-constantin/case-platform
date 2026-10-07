@@ -1,0 +1,42 @@
+.phone-case { --phone-ink: #233c50; --phone-blue: #325b76; --phone-paper: #eef4f7; --phone-edge: #bd8d43; min-height: 100svh; background: #d4e0e6; display: flex; justify-content: center; align-items: center; gap: 76px; padding: 48px 24px; color: var(--phone-ink); font-family: "Segoe UI", sans-serif; }
+.phone-case button, .phone-case input { font: inherit; }
+.phone-case button { cursor: pointer; }
+.phone-case button:disabled { cursor: wait; opacity: .65; }
+.phone-case button:focus-visible, .phone-case input:focus-visible { outline: 3px solid var(--phone-edge); outline-offset: 4px; }
+.phone-intro { max-width: 320px; }
+.phone-eyebrow { font-family: Consolas, monospace; text-transform: uppercase; letter-spacing: .16em; font-size: .75rem; }
+.phone-intro h1 { font: 400 clamp(2.4rem, 5vw, 3.8rem)/1.06 Georgia, serif; letter-spacing: -.04em; margin: 24px 0; }
+.phone-intro p { line-height: 1.7; }
+.phone-intro > button { background: none; border: 0; border-bottom: 1px solid var(--phone-blue); padding: 8px 0; margin-top: 20px; color: var(--phone-blue); }
+.phone-device { width: 360px; flex-shrink: 0; min-height: 660px; border: 7px solid var(--phone-ink); border-right-color: var(--phone-edge); border-radius: 42px; background: var(--phone-paper); box-shadow: 14px 22px 0 #233c5010; overflow: hidden; position: relative; padding-bottom: 36px; }
+.phone-status { display: flex; justify-content: space-between; padding: 20px 26px 12px; font-size: .73rem; font-weight: 600; }
+.phone-device header { display: flex; align-items: center; gap: 10px; padding: 8px 18px 16px; border-bottom: 1px solid #ccdbe3; }
+.phone-device header h2 { font-size: 1rem; font-weight: 600; margin: 0; }
+.phone-device header button { width: 32px; border: 0; background: none; color: var(--phone-blue); font-size: 1.8rem; }
+.phone-content { padding: 24px 20px; }
+.phone-owner { font: 400 1.7rem/1.2 Georgia, serif; margin: 24px 0 40px; }
+.phone-content nav { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.phone-content nav button { display: grid; gap: 12px; place-items: center; padding: 20px 8px; border: 1px solid #b7cdd9; border-radius: 18px; background: #dce9f0; color: var(--phone-ink); }
+.phone-content nav button span { font-size: 2rem; }
+.phone-messages { list-style: none; padding: 0; margin: 0; }
+.phone-messages li { margin-bottom: 20px; }
+.phone-messages h3 { font-size: .75rem; margin: 0 0 8px 4px; color: var(--phone-blue); }
+.phone-messages p { background: #dce9f0; border-radius: 2px 15px 15px; padding: 14px; margin: 0; line-height: 1.55; font-size: .9rem; }
+.phone-home-indicator { position: absolute; bottom: 13px; height: 4px; width: 100px; background: var(--phone-ink); border-radius: 4px; left: calc(50% - 50px); }
+@media (max-width: 760px) { .phone-case { flex-direction: column; gap: 28px; padding: 24px 16px; align-items: center; } .phone-intro { width: min(100%, 360px); } .phone-intro h1 { font-size: 2.3rem; margin: 12px 0; } .phone-intro h1 br { display: none; } .phone-intro > button { margin-top: 0; } .phone-device { width: min(360px, 100%); min-height: 620px; } }
+.phone-hint { font-size: .8rem; color: var(--phone-blue); margin-top: 30px; }
+.phone-gallery h3 { font: 400 1.5rem Georgia, serif; }
+.phone-gallery p { font-size: .9rem; line-height: 1.5; }
+.phone-lock { color: var(--phone-edge); font-size: 3rem; margin-top: 16px; }
+.phone-gallery form { display: grid; gap: 12px; margin-top: 24px; }
+.phone-gallery label { font-size: .8rem; }
+.phone-gallery input { width: 100%; border: 1px solid #97afbe; border-radius: 8px; background: white; padding: 12px; color: var(--phone-ink); }
+.phone-gallery button, .phone-feedback > button { border: 0; border-radius: 8px; padding: 12px; background: var(--phone-blue); color: white; }
+.phone-gallery figure { margin: 0 0 24px; }
+.phone-gallery img { display: block; max-width: 100%; width: 100%; border-radius: 8px; }
+.phone-gallery figcaption { font-size: .75rem; padding-top: 8px; }
+.phone-feedback { margin-top: 24px; font-size: .85rem; line-height: 1.5; }
+.phone-feedback p[role="alert"] { border-left: 3px solid #98641d; padding-left: 12px; }
+.phone-feedback > button.phone-refresh { display: block; margin-top: 16px; background: transparent; color: var(--phone-blue); padding: 4px 0; font-size: .75rem; border-bottom: 1px solid #97afbe; border-radius: 0; }
+.phone-completion { border-top: 1px solid #97afbe; padding-top: 12px; }
+.phone-completion h2 { font-size: 1.2rem; }
