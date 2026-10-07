@@ -1,6 +1,6 @@
 # M0 acceptance criteria
 
-Status: review criteria, not executed test results. Implementation has not started. These criteria verify the decisions in [M0 architecture](m0-architecture.md) and the exact slices in [M0 scope](m0-scope.md).
+Status: historical design-time acceptance criteria, not executed test results. M0 has since been completed and merged; see [M0 closeout](m0-closeout.md) for the verification record and the direction for M1. The criteria below are preserved. They verify the decisions in [M0 architecture](m0-architecture.md) and the exact slices in [M0 scope](m0-scope.md).
 
 ## Primary verification boundary
 
